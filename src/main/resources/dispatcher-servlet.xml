@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/mvc
+       https://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--Springmvc配置文件，声明Controller和其他的web相关的对象-->
+
+    <!--声明组件扫描器-->
+    <context:component-scan base-package="com.qiao.controller"/>
+    <context:component-scan base-package="com.qiao.domain"/>
+    <context:component-scan base-package="com.qiao.dao" />
+    <context:component-scan base-package="com.qiao.service" />
+    <context:component-scan base-package="com.qiao.interception"/>
+
+    <!-- 声明Springmvc框架中的视图解析器，帮助开发人员设置视图文件的路径-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/pages/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--2021/04/13 添加拦截器功能
+                    from Qiao
+    -->
+
+    <!--声明拦截器：拦截器可以有一个或多个-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!--
+                指定拦截的请求uri地址
+                path：就是uri地址，可以使用通配符 **
+                    ** ： 表示任意的字符，文件或者多级目录和目录中的文件
+
+            -->
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="userLogin.jsp"/>
+            <mvc:exclude-mapping path="/user/userLogin"/>
+            <!--<mvc:exclude-mapping path="/resources/**"/>-->
+            <mvc:exclude-mapping path="/userRegister"/>
+            <mvc:exclude-mapping path="/user/register"/>
+
+            <!--声明拦截器对象，即拦截器类所在的全限定位置-->
+            <bean class="com.qiao.interception.MyInterception"/>
+
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+
+
+    <!--进行注解驱动声明，声明以后Springmvc会默认创建七个HttpMessageConverter对象-->
+    <mvc:annotation-driven />
+    <!--
+        1.响应ajax请求，返回json
+        2.解决静态资源访问问题
+    -->
+    <mvc:resources mapping="/resources/**" location="/resources/" />
+    <mvc:default-servlet-handler/>
+</beans>

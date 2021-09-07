@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--settings:控制Mybatis的全局行为的-->
+    <settings>
+        <!--设置Mybatis的输出日志-->
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
+
+    <!--定义别名-->
+    <typeAliases>
+        <!--name：实体类所在的包名（一般就是实体类包名选择）-->
+        <package name="com.qiao.domain"/>
+    </typeAliases>
+
+    <mappers>
+        <!--mapper：一个mapper标签指定一个文件的位置
+            从类路径开始的路径信息。target/classes(类路径)
+
+            使用package时，name是包名所在的全限定名称，这个包中的所有mapper.xml一次都能加载
+            要求：
+                1.mapper文件名称与dao的接口名必须完全一样，包括大小写
+                2.mapper文件和dao接口必须在同一目录
+        -->
+        <!--<mapper resource="com/bjpowernode/dao/StudentDao.xml"/>-->
+<!--        <package name="com.qiao.mapper"/>-->
+        <mapper resource="com/qiao/mapper/UserDao.xml"/>
+        <mapper resource="com/qiao/mapper/BoardDao.xml"/>
+        <mapper resource="com/qiao/mapper/PostDao.xml"/>
+        <mapper resource="com/qiao/mapper/ReplyDao.xml"/>
+        <mapper resource="com/qiao/mapper/UserLoginLog.xml"/>
+    </mappers>
+</configuration>
